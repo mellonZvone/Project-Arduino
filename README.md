@@ -1,7 +1,31 @@
 # Project Arduino
-Local server setup
+
+# Garage Opener
+
+Remote open your garage with mobile phone from anywhere
+
+## Getting Started
+
+I am using Arduino with Raspberry as my local server. Idea is to open my garage with app outside from my local network.
+
+### Prerequisites
+
+Raspberry Pi 3
+Arduino
+Ultrasonic sensor
+Infrared sensor
+Magnetic sensor
+Temprature sensor
+Software for mobile app is Blynk (eseaiset way to do for iOS in my example)
+Backend server configuration runs Blynk config
+
+### Installing
+
+Local server setup on Raspberry Pi
+
+Download Blynk local server from blynk.com
 https://github.com/blynkkk/blynk-server#blynk-server
-Download Blynk local server od blynk.com
+
 Update raspberry pi
 curl -sL "https://deb.nodesource.com/setup_6.x" | sudo -E bash -
  sudo apt-get update && sudo apt-get upgrade
@@ -9,30 +33,39 @@ curl -sL "https://deb.nodesource.com/setup_6.x" | sudo -E bash -
  sudo npm install -g npm
  sudo npm install -g onoff
  sudo npm install -g blynk-library
-Skini blynk library
+
+Download blynk library
 $ git clone https://github.com/blynkkk/blynk-library.git
 $ cd blynk-library/linux
 $ make clean all target=raspberry
 (https://github.com/blynkkk/blynk-library/tree/master/linux)
-instaliraj javu 8
-Napravi dvije datoteke za server i mail config u folderu gdje je .jar
+Install java 8
+Create two files for server and mail configuration in folder where your server.jar is located (example /home/pi/):
+cd /home/pi/
 cat > server.properties
 cat > mail.properties
-u rootu pokreni 
+
+Edit file mail.properties, add your mail
+
+In root start server: 
 java -jar server-0.23.5.jar -dataFolder /home/pi/Blynk -serverConfig /home/pi/server.properties -mailConfig /home/pi/mail.properties
-Za automatski start servera odi u /etc/init.d/rc.local i dodaj: 
+
+For automatic start this server, go in /etc/init.d/rc.local and add this:
 java -jar /home/pi/server-0.23.5.jar -dataFolder /home/pi/Blynk -serverConfig /home/pi/server.properties -mailConfig /home/pi/mail.properties &
-ili
+Or
 crontab -e
-zatim:
+Edit this file in:
 @reboot java -jar /home/pi/server-0.23.5.jar -dataFolder /home/pi/Blynk -serverConfig /home/pi/server.properties -mailConfig /home/pi/mail.properties &
-u folderu blynk-library/scripts/ uredi file blynk-ser.sh
-ip adresu servera, i varijable FROM_TYPE, TO_TYPE u SER i TCP tip
-Nakon toga pokreni blynk skriptu 
-./blynk-ser.sh -c /dev/ttyS0(ako je samo jedan usb uredaj spojen) -s 192.168.0.104
-u blynk-ser.sh scripti promijenis local IP za spajanje hardwarea na server
-rezerviraj IP na routerima
-u mail.properties postavis svoju mail adresu i u gmailu dopustis stranim (bez certifikata) mailovima slanje primanje
+
+In folder blynk-library/scripts/ edit file blynk-ser.sh:
+Server ip address(Rpi address), 
+And variable FROM_TYPE, TO_TYPE edit in SER and TCP type
+
+Additional: reserve your server ip in your router dns list
+
+After that start blynk script: 
+
+./blynk-ser.sh -c /dev/ttyS0(if is connected only one usb device in rpi) -s 192.168.0.104(thats my local server ip)
 
 Admin panel :
 https://local-IP:9443/admin
