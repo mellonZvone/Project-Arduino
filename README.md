@@ -24,64 +24,65 @@ I am using Arduino with Raspberry as my local server. Idea is to open my garage 
 Local server setup on Raspberry Pi 
 
 Download Blynk local server and more details on this project:
-* [Blynk github page](https://github.com/blynkkk/blynk-server#blynk-server)
+	[Blynk github page](https://github.com/blynkkk/blynk-server#blynk-server)
 
 
-+ Update raspberry pi
+Update raspberry pi
 
-	curl -sL "https://deb.nodesource.com/setup_6.x" | sudo -E bash -
-	sudo apt-get update && sudo apt-get upgrade
-	sudo apt-get install build-essential
-	sudo npm install -g npm
-	sudo npm install -g onoff
-	sudo npm install -g blynk-library
+		curl -sL "https://deb.nodesource.com/setup_6.x" | sudo -E bash -
+		sudo apt-get update && sudo apt-get upgrade
+		sudo apt-get install build-essential
+		sudo npm install -g npm
+		sudo npm install -g onoff
+		sudo npm install -g blynk-library
 
-+ Download blynk library
-	$ git clone https://github.com/blynkkk/blynk-library.git
-	$ cd blynk-library/linux
-	$ make clean all target=raspberry
+Download blynk library
 
-	(https://github.com/blynkkk/blynk-library/tree/master/linux)
+		$ git clone https://github.com/blynkkk/blynk-library.git
+		$ cd blynk-library/linux
+		$ make clean all target=raspberry
 
-+ Install java 8
+		(https://github.com/blynkkk/blynk-library/tree/master/linux)
 
-+ Create two files for server and mail configuration in folder where your server.jar is located (example /home/pi/):
+Install java 8
 
-	cd /home/pi/
-	cat > server.properties
-	cat > mail.properties
+Create two files for server and mail configuration in folder where your server.jar is located (example /home/pi/):
 
-+ Edit file mail.properties, add your mail
+		cd /home/pi/
+		cat > server.properties
+		cat > mail.properties
 
-+ In root start server: 
+Edit file mail.properties, add your mail
 
-	java -jar server-0.23.5.jar -dataFolder /home/pi/Blynk -serverConfig /home/pi/server.properties -mailConfig /home/pi/mail.properties
+In root start server: 
 
-+ For automatic start this server, go in /etc/init.d/rc.local and add this:
+		java -jar server-0.23.5.jar -dataFolder /home/pi/Blynk -serverConfig /home/pi/server.properties -mailConfig /home/pi/mail.properties
 
-	java -jar /home/pi/server-0.23.5.jar -dataFolder /home/pi/Blynk -serverConfig /home/pi/server.properties -mailConfig /home/pi/mail.properties &
+For automatic start this server, go in /etc/init.d/rc.local and add this:
 
-+ Or
+		java -jar /home/pi/server-0.23.5.jar -dataFolder /home/pi/Blynk -serverConfig /home/pi/server.properties -mailConfig /home/pi/mail.properties &
 
-	crontab -e
+Or
 
-+ Edit this file in:
+		crontab -e
 
-	@reboot java -jar /home/pi/server-0.23.5.jar -dataFolder /home/pi/Blynk -serverConfig /home/pi/server.properties -mailConfig /home/pi/mail.properties &
+Edit this file in:
 
-+ In folder blynk-library/scripts/ edit file blynk-ser.sh:
+		@reboot java -jar /home/pi/server-0.23.5.jar -dataFolder /home/pi/Blynk -serverConfig /home/pi/server.properties -mailConfig /home/pi/mail.properties &
 
-	Server ip address(Rpi address), 
-	And variable FROM_TYPE, TO_TYPE edit in SER and TCP type
+In folder blynk-library/scripts/ edit file blynk-ser.sh:
 
-+ Additional: reserve your server ip in your router dns list
+		Server ip address(Rpi address), 
+		And variable FROM_TYPE, TO_TYPE edit in SER and TCP type
 
-+ After that start blynk script: 
+Additional: reserve your server ip in your router dns list
 
-	./blynk-ser.sh -c /dev/ttyS0(if is connected only one usb device in rpi) -s 192.168.0.104(thats my local server ip)
+After that start blynk script: 
 
-+ Admin panel :
-	https://local-IP:9443/admin
+		./blynk-ser.sh -c /dev/ttyS0(if is connected only one usb device in rpi) -s 192.168.0.104(thats my local server ip)
+
+Admin panel :
+		https://local-IP:9443/admin
 
 
 ## Built With
